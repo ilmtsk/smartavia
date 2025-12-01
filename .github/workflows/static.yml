@@ -1,43 +1,140 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Загрузка...</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #f5f5f5;
+            font-family: Arial, sans-serif;
+        }
+        
+        .loader-container {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 30px;
+            animation: pulse 2s infinite;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f0e6ff;
+            border-top: 5px solid #ff6600;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            animation: spin 1s linear infinite;
+        }
+        
+        .loading-text {
+            color: #8a2be2;
+            font-size: 24px;
+            font-weight: 900;
+            margin-top: 20px;
+            text-shadow: 1px 1px 3px rgba(138, 43, 226, 0.2);
+        }
+        
+        .progress-container {
+            width: 200px;
+            height: 4px;
+            background: #f0e6ff;
+            margin: 20px auto;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 30%;
+            background: #ff6600;
+            animation: progress 3s infinite ease-in-out;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+        
+        @keyframes progress {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(300%); }
+        }
+    </style>
+</head>
+<body>
+    <div class="loader-container">
+        <div class="logo">🔄</div>
+        <div class="spinner"></div>
+        <div class="loading-text">Проверяем Ваше устройство</div>
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+        <div id="status" style="margin-top: 10px; color: #666; font-size: 14px;">
+            Проверяем Ваше устройство
+        </div>
+    </div>
 
-on:
-  # Runs on pushes targeting the default branch
-  push:
-    branches: ["main"]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
-jobs:
-  # Single deploy job since we're just deploying
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Upload entire repository
-          path: '.'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+    <script>
+        // Случайные сообщения о статусе проверки устройства
+        const messages = [
+            "Проверяем Ваше устройство",
+            "Анализируем системные параметры",
+            "Тестируем совместимость",
+            "Проверяем производительность",
+            "Сканируем конфигурацию",
+            "Оцениваем возможности системы"
+        ];
+        
+        let messageIndex = 0;
+        
+        // Меняем сообщение каждые 3 секунды
+        function updateStatus() {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = messages[messageIndex];
+            messageIndex = (messageIndex + 1) % messages.length;
+            
+            // Также можно менять ширину прогресс-бара
+            const progressBar = document.querySelector('.progress-bar');
+            progressBar.style.width = ${10 + Math.random() * 30}%;
+        }
+        
+        // Начинаем менять статусы
+        setInterval(updateStatus, 3000);
+        
+        // Имитируем некоторые действия для видимости работы
+        setTimeout(() => {
+            updateStatus();
+        }, 1000);
+        
+        // Предотвращаем закрытие/перезагрузку страницы
+        window.addEventListener('beforeunload', (e) => {
+            e.preventDefault();
+            e.returnValue = '';
+        });
+    </script>
+</body>
+</html>
